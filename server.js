@@ -10,8 +10,10 @@ const PORT = process.env.PORT || 3001;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// Serve up static assets
-app.use(express.static("client/build"));
+// Serve up static assets (usually on heroku)
+if (process.env.NODE_ENV === "production") {
+    app.use(express.static("client/build"));
+}
 // Add routes to our API
 app.use("/api", routes);
 
@@ -23,7 +25,7 @@ app.get("*", function (req, res) {
 mongoose.Promise = Promise;
 
 // Connect to the Mongo DB
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/BruVue");
+mongoose.connect(process.env.MONGODB_URI || "mongodb://heroku_dg5vhjf3:h51s6fefbtsv25am0kumj9pbou@ds041377.mlab.com:41377/heroku_dg5vhjf3");
 
 // Start the API server
 app.listen(PORT, function () {
