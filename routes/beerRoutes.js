@@ -1,9 +1,6 @@
 const router = require('express').Router();
 const beerController = require('../controllers/beerController');
 
-router.route('/BruVue/local/beers')
-    .get(beerController.getLocalBeers)
-
 router.route('/BruVue/beers')
     .get(beerController.getAllBeers) //fetches all the beers
     .post(beerController.addABeer) //adds a beer

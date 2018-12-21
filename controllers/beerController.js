@@ -1,6 +1,7 @@
 // import db
 const db = require('../models/beerModel');
-const beers = require('../data/beers.json');
+
+
 module.exports = {
 
     getAllBeers: (req, res) => {
@@ -29,10 +30,10 @@ module.exports = {
             .deleteOne({ _id: req.params.id })
             .then(dbBeer => res.json(dbBeer))
             .catch(err => console.log(err))
-    },
-
-    updateABeer: (req, res) => {
-        db
-            .findOneAndUpdate({ _id: req.params.id }, req.body)
     }
+
+    // updateABeer: (req, res) => {
+    //     db
+    //         .findOneAndUpdate({ _id: req.params.id }, req.body)
+    // }
 }
