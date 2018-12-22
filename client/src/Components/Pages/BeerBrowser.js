@@ -156,11 +156,22 @@ class BeerBrowser extends Component {
 
     handleRemoveBeer = (e) => {
         e.preventDefault()
-        let { formValues } = this.state
-
+        let { formValues, beers } = this.state
+        console.log(beers);
         formValues.ABV = Number(formValues.ABV)
+        let beerNameIndex;
+        let beerMap = beers.map((beer, i) => {
+            if (beer["Beer Name"] === formValues["Beer Name"]) {
+                beerNameIndex = i
+            }
+            return beerNameIndex
+        })
 
-        axios.delete(`/api/BruVue/beers/${formValues["Beer Name"]}/${formValues["Brewery Name"]}/${formValues["Beer Style"]}/${formValues["ABV"]}`, formValues)
+        // console.log(beerNameIndex)
+        let beerRemoveId = beers[beerNameIndex]._id
+
+
+        axios.delete(`/api/BruVue/beers/${beerRemoveId}`)
             .then(res => {
                 let beers = res.data;
                 this.setState({ beers })
@@ -171,7 +182,11 @@ class BeerBrowser extends Component {
 
     toggleButton = (e) => {
         e.preventDefault()
-
+        axios.get(`/api/BruVue/beers`)
+        .then(res=>{
+            let beers = res.data;
+            this.setState({beers})
+        })
         let { toggleButtons, toggleDataTable } = this.state;
         console.log(e.target)
         console.log(e.target.innerHTML)
@@ -196,7 +211,6 @@ class BeerBrowser extends Component {
     render() {
         let { beers: servedBeers } = this.state
 
-        let beerName = this.state.beers.map(beers => { return beers["Beer Name"] })
 
         return (
             <React.Fragment>
@@ -227,7 +241,7 @@ class BeerBrowser extends Component {
                         </Grommet>) : (
                             <Grommet theme={grommet}>
                                 <Box align="start" pad="large" gap="medium" animation={[{ type: "slideLeft", duration: 1000 }]}>
-                                    <Select
+                                    {/* <Select
                                         size="medium"
                                         placeholder="Remove a Beer"
                                         multiple
@@ -240,9 +254,9 @@ class BeerBrowser extends Component {
                                             this.setState({
                                                 beers: beerName.filter(o => exp.test(o))
                                             })
-                                        }} />
+                                        }} /> */}
 
-                                    {/* {this.state.dataTable.map((input, i) => (
+                                    {this.state.dataTable.map((input, i) => (
                                         <TextInput
                                             id={input.property}
                                             key={input.property}
@@ -252,7 +266,7 @@ class BeerBrowser extends Component {
                                             onChange={this.onChange}
                                             gap="small"
                                         />
-                                    ))} */}
+                                    ))}
                                     <Box direction="row" align="center" gap="small" pad="xsmall">
                                         <Button hoverIndicator="status-ok" onClick={this.handleAddBeer}>
                                             <Box pad="small" direction="row" align="start" gap="small">

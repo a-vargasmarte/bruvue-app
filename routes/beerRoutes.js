@@ -6,7 +6,7 @@ router.route('/BruVue/beers')
     .post(beerController.addABeer) //adds a beer
 
 
-router.route('/BruVue/beers/:beerName/:breweryName/:beerStyle/:ABV')
+router.route('/BruVue/beers/:id')
     .get(beerController.getABeer) //get a beer by id
     .delete(beerController.deleteABeer) // delete a beer by id
 

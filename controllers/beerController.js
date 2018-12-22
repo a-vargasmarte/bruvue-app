@@ -27,7 +27,7 @@ module.exports = {
 
     deleteABeer: (req, res) => {
         db
-            .find({ "Beer Name": req.params.beerName }, { "Brewery Name": req.params.breweryName }, { "Beer Style": req.params.beerStyle }, { "ABV": req.params.ABV })
+            .findById({ _id: req.params.id })
             .then(dbBeer => dbBeer.remove())
             .then(dbBeer => res.json(dbBeer))
             .catch(err => console.log(err))
