@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import GrommetComponent from './Grommet';
+import GrommetComponent from './GrommetComponent';
 import { grommet } from 'grommet/themes'
 import GrommetGrid from './GrommetGrid';
 import HeaderBox from './HeaderBox';
@@ -7,7 +7,7 @@ import SideNavBox from './SideNavBox';
 import SideNavBoxButtons from './SideNavBoxButtons';
 import SideNavButton from './SideNavButton';
 
-class NewLayout extends Component {
+class Layout extends Component {
     state = {
         sidebar: true,
         grid: {
@@ -116,4 +116,4 @@ class NewLayout extends Component {
     }
 }
 
-export default NewLayout;
+export default Layout;

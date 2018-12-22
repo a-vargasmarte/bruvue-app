@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grommet, Box, DataTable, FormField, TextInput, Button, Text, Grid } from 'grommet';
+import { Grommet, Box, DataTable, FormField, TextInput, Button, Text, Grid, Select } from 'grommet';
 import { grommet } from 'grommet/themes';
 import { Add, FormSubtract } from 'grommet-icons';
 import axios from 'axios';
@@ -47,7 +47,8 @@ class BeerBrowser extends Component {
         toggleButtons: [
             { color: "dark-1", label: "Browse Beers" },
             { color: 'status-disabled', label: "Add or Remove a Beer" }
-        ]
+        ],
+        removeBeerValue: ""
 
 
 
@@ -157,6 +158,15 @@ class BeerBrowser extends Component {
         e.preventDefault()
         let { formValues } = this.state
 
+        formValues.ABV = Number(formValues.ABV)
+
+        axios.delete(`/api/BruVue/beers/${formValues["Beer Name"]}/${formValues["Brewery Name"]}/${formValues["Beer Style"]}/${formValues["ABV"]}`, formValues)
+            .then(res => {
+                let beers = res.data;
+                this.setState({ beers })
+            })
+            .catch(err => console.log(err))
+
     }
 
     toggleButton = (e) => {
@@ -185,6 +195,8 @@ class BeerBrowser extends Component {
 
     render() {
         let { beers: servedBeers } = this.state
+
+        let beerName = this.state.beers.map(beers => { return beers["Beer Name"] })
 
         return (
             <React.Fragment>
@@ -215,7 +227,22 @@ class BeerBrowser extends Component {
                         </Grommet>) : (
                             <Grommet theme={grommet}>
                                 <Box align="start" pad="large" gap="medium" animation={[{ type: "slideLeft", duration: 1000 }]}>
-                                    {this.state.dataTable.map((input, i) => (
+                                    <Select
+                                        size="medium"
+                                        placeholder="Remove a Beer"
+                                        multiple
+                                        options={beerName}
+                                        value={this.state.removeBeerValue}
+                                        onChange={({ option }) => this.setState({ removeBeerValue: option })}
+                                        onClose={() => this.setState({ options: beerName })}
+                                        onSearch={text => {
+                                            const exp = new RegExp(text, "i");
+                                            this.setState({
+                                                beers: beerName.filter(o => exp.test(o))
+                                            })
+                                        }} />
+
+                                    {/* {this.state.dataTable.map((input, i) => (
                                         <TextInput
                                             id={input.property}
                                             key={input.property}
@@ -225,7 +252,7 @@ class BeerBrowser extends Component {
                                             onChange={this.onChange}
                                             gap="small"
                                         />
-                                    ))}
+                                    ))} */}
                                     <Box direction="row" align="center" gap="small" pad="xsmall">
                                         <Button hoverIndicator="status-ok" onClick={this.handleAddBeer}>
                                             <Box pad="small" direction="row" align="start" gap="small">

@@ -5,7 +5,7 @@ const beers = require('../data/beers.json')
 mongoose.Promise = global.Promise
 
 mongoose.connect(
-    process.env.MONGODB_URI || "mongodb://localhost/BruVue"
+    process.env.MONGODB_URI || "mongodb://heroku_dg5vhjf3:h51s6fefbtsv25am0kumj9pbou@ds041377.mlab.com:41377/heroku_dg5vhjf3"
 );
 
 removeDuplicates = (myArr, prop) => {

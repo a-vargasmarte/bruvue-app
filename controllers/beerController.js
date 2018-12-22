@@ -27,13 +27,9 @@ module.exports = {
 
     deleteABeer: (req, res) => {
         db
-            .deleteOne({ _id: req.params.id })
+            .find({ "Beer Name": req.params.beerName }, { "Brewery Name": req.params.breweryName }, { "Beer Style": req.params.beerStyle }, { "ABV": req.params.ABV })
+            .then(dbBeer => dbBeer.remove())
             .then(dbBeer => res.json(dbBeer))
             .catch(err => console.log(err))
     }
-
-    // updateABeer: (req, res) => {
-    //     db
-    //         .findOneAndUpdate({ _id: req.params.id }, req.body)
-    // }
 }
